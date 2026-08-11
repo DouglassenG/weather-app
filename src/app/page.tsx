@@ -3,22 +3,56 @@
 import { useState } from "react";
 import { SearchBar } from "@/components/weather/SearchBar";
 import { WeatherCard } from "@/components/weather/WeatherCard";
-import { fetchWeather } from "@/lib/weather";
-import { WeatherResponse } from "@/types/weather";
+import { CitySelect } from "@/components/weather/CitySelect";
+import { fetchWeather, fetchWeatherByCoords } from "@/lib/weather";
+import { WeatherData, GeocodingResult } from "@/types/weather";
 
 export default function Home() {
-  const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [cities, setCities] = useState<GeocodingResult[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  async function handleSearch(city: string) {
-    setIsLoading(true);
+  function resetStates() {
     setError("");
     setWeatherData(null);
+    setCities([]);
+  }
+
+  async function handleSearch(city: string) {
+    setIsLoading(true);
+    resetStates();
 
     try {
-      const data = await fetchWeather(city);
-      setWeatherData(data);
+      const result = await fetchWeather(city);
+
+      if (result.type === "multiple") {
+        setCities(result.results);
+      } else {
+        setWeatherData(result.data);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Erro inesperado ao buscar previsão do tempo");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleCitySelect(location: GeocodingResult) {
+    setIsLoading(true);
+    setCities([]);
+    setError("");
+
+    try {
+      const result = await fetchWeatherByCoords(location);
+
+      if (result.type === "weather") {
+        setWeatherData(result.data);
+      }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -67,6 +101,12 @@ export default function Home() {
             style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}
           >
             {error}
+          </div>
+        )}
+
+        {cities.length > 0 && (
+          <div className="animate-scale-in">
+            <CitySelect cities={cities} onSelect={handleCitySelect} />
           </div>
         )}
 
