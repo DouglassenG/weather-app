@@ -79,7 +79,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
 
       <div className="relative z-10 w-full max-w-md">
-        <div className="animate-fade-in-up rounded-2xl border border-white/15 bg-black/40 p-8 text-center shadow-2xl backdrop-blur-lg">
+        <div className="animate-fade-in-up animate-border-glow rounded-2xl border-2 bg-black/40 p-8 text-center backdrop-blur-lg">
           <h1
             className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
             style={{ textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}
