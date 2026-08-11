@@ -31,15 +31,23 @@ export default function Home() {
   }
 
   return (
-    <main
-      className="relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-4 py-12"
-      style={{ backgroundImage: "url('/background_page.jpg')" }}
-    >
+    <main className="relative flex min-h-screen items-center justify-center px-4 py-12">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover"
+      >
+        <source src="/background_page.mp4" type="video/mp4" />
+      </video>
+
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
 
       <div className="relative z-10 w-full max-w-md">
         <div className="animate-fade-in-up rounded-2xl border border-white/15 bg-black/40 p-8 text-center shadow-2xl backdrop-blur-lg">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
+          <h1
+            className="text-4xl font-bold tracking-tight text-white sm:text-5xl"
             style={{ textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}
           >
             Previsão do Tempo
@@ -54,7 +62,8 @@ export default function Home() {
         </div>
 
         {error && (
-          <div className="animate-scale-in mt-4 rounded-xl border border-red-400/30 bg-red-900/60 px-4 py-3 text-sm text-white backdrop-blur-md"
+          <div
+            className="animate-scale-in mt-4 rounded-xl border border-red-400/30 bg-red-900/60 px-4 py-3 text-sm text-white backdrop-blur-md"
             style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}
           >
             {error}
