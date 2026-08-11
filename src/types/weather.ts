@@ -1,42 +1,50 @@
-// Representa um item do array "weather" da API
-// Contém a descrição textual e o ícone do clima (ex: "nublado", "01d")
-export interface WeatherCondition {
-    id: number;
-    main: string;
-    description: string;
-    icon: string;
+export interface GeocodingResult {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  country: string;
+  country_code: string;
+  admin1?: string;
 }
 
-// Dados principais: temperaturas e umidade
-// A API retorna em Kelvin por padrão, mas vamos pedir em Celsius via parâmetro
-export interface MainData {
-  temp: number;
+export interface GeocodingResponse {
+  results?: GeocodingResult[];
+}
+
+export interface CurrentWeather {
+  temperature_2m: number;
+  relative_humidity_2m: number;
+  apparent_temperature: number;
+  weather_code: number;
+  wind_speed_10m: number;
+  wind_direction_10m: number;
+  is_day: number;
+}
+
+export interface DailyWeather {
+  temperature_2m_max: number[];
+  temperature_2m_min: number[];
+}
+
+export interface OpenMeteoResponse {
+  current: CurrentWeather;
+  daily: DailyWeather;
+}
+
+export interface WeatherData {
+  city: string;
+  country: string;
+  state?: string;
+  temperature: number;
   feels_like: number;
+  humidity: number;
+  wind_speed: number;
+  wind_direction: number;
   temp_min: number;
   temp_max: number;
-  humidity: number;
-}
-
-// Dados de vento: velocidade em m/s e direção em graus
-export interface WindData {
-  speed: number;
-  deg: number;
-}
-
-// Resposta completa da API /weather (current weather)
-// Junta todos os blocos acima + nome da cidade e país
-export interface WeatherResponse {
-  name: string;
-  weather: WeatherCondition[];
-  main: MainData;
-  wind: WindData;
-  sys: {
-    country: string;
-  };
-}
-
-// Tipo para quando a API retorna erro (ex: cidade não encontrada)
-export interface WeatherError {
-  message: string;
-  cod: string;
+  weather_code: number;
+  is_day: boolean;
+  description: string;
+  icon: string;
 }

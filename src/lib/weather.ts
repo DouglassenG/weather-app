@@ -1,6 +1,6 @@
-    import { WeatherResponse } from "@/types/weather";
+    import { WeatherData } from "@/types/weather";
 
-    export async function fetchWeather(city: string): Promise<WeatherResponse> {
+    export async function fetchWeather(city: string): Promise<WeatherData> {
     const response = await fetch(
         `/api/weather?city=${encodeURIComponent(city)}`
     );
@@ -10,6 +10,6 @@
         throw new Error(error.message || "Erro ao buscar previsão do tempo");
     }
 
-    const data: WeatherResponse = await response.json();
+    const data: WeatherData = await response.json();
     return data;
     }
