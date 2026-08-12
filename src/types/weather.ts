@@ -27,9 +27,15 @@ export interface DailyWeather {
   temperature_2m_min: number[];
 }
 
+export interface HourlyWeather {
+  time: string[];
+  precipitation_probability: number[];
+}
+
 export interface OpenMeteoResponse {
   current: CurrentWeather;
   daily: DailyWeather;
+  hourly: HourlyWeather;
 }
 
 export interface WeatherData {
@@ -47,4 +53,5 @@ export interface WeatherData {
   is_day: boolean;
   description: string;
   icon: string;
+  precipitation_probability: number;
 }

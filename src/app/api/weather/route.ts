@@ -160,8 +160,8 @@ export async function GET(request: NextRequest) {
       resolvedState = location.admin1;
     }
 
-    const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,is_day&daily=temperature_2m_max,temperature_2m_min&timezone=auto`;
-
+    const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,is_day&daily=temperature_2m_max,temperature_2m_min&hourly=precipitation_probability&timezone=auto`;
+    
     const forecastResponse = await fetch(forecastUrl);
 
     if (!forecastResponse.ok) {
@@ -175,6 +175,13 @@ export async function GET(request: NextRequest) {
     const current = forecastData.current;
     const isDay = current.is_day === 1;
     const weatherInfo = getWeatherInfo(current.weather_code, isDay);
+
+    const now = new Date();
+    const currentHour = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}T${String(now.getHours()).padStart(2, "0")}:00`;
+    const hourIndex = forecastData.hourly.time.indexOf(currentHour);
+    const precipProbability = hourIndex !== -1
+      ? forecastData.hourly.precipitation_probability[hourIndex]
+      : 0;
 
     const weatherData: WeatherData = {
       city: resolvedName,
@@ -191,6 +198,7 @@ export async function GET(request: NextRequest) {
       is_day: isDay,
       description: weatherInfo.description,
       icon: weatherInfo.icon,
+      precipitation_probability: precipProbability,
     };
 
     return NextResponse.json({ type: "weather", data: weatherData });

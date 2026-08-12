@@ -5,6 +5,7 @@ import {
   Wind,
   ArrowDown,
   ArrowUp,
+  CloudRain,
 } from "lucide-react";
 
 interface WeatherCardProps {
@@ -91,6 +92,19 @@ export function WeatherCard({ data }: WeatherCardProps) {
             </p>
             <p className="text-base font-medium text-white">
               {data.wind_speed} km/h
+            </p>
+          </div>
+        </div>
+        <div className="group col-span-2 flex items-center gap-3 rounded-xl border border-white/5 bg-white/5 p-3 transition-colors duration-300 hover:bg-white/10">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-500/20 text-violet-400">
+            <CloudRain size={18} />
+          </div>
+          <div>
+            <p className="text-[11px] uppercase tracking-wider text-white/40">
+              Probabilidade de chuva
+            </p>
+            <p className="text-base font-medium text-white">
+              {data.precipitation_probability}%
             </p>
           </div>
         </div>
