@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌦️ Weather App — Previsão do Tempo
 
-## Getting Started
+Aplicação web de consulta de previsão do tempo em tempo real, com interface glassmorphism e vídeo de fundo animado.
+---
 
-First, run the development server:
+## 🎯 Sobre o Projeto
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Weather App permite consultar o clima atual de qualquer cidade do mundo de forma rápida e visual. A aplicação consome a API gratuita [Open-Meteo](https://open-meteo.com/) e exibe temperatura, sensação térmica, umidade, vento, mínima/máxima e probabilidade de chuva.
+
+---
+
+## ✨ Funcionalidades
+
+- 🔍 Busca por nome de cidade com suporte a formato **"cidade, estado"** (ex: Lajeado, RS)
+- 🗺️ Geocoding automático via Open-Meteo — converte nome em coordenadas
+- 📋 Seleção de cidade quando há nomes duplicados (ex: Lajeado/RS vs Lajeado/SP)
+- 🌡️ Dados em tempo real: temperatura, sensação térmica, umidade, vento e probabilidade de chuva
+- 🇧🇷 Mapa completo das 27 siglas de estados brasileiros
+- 🌙 Ícones adaptados para dia e noite (códigos WMO)
+- 🎬 Vídeo de fundo em loop com overlay gradiente
+- 💎 Interface glassmorphism com animações de entrada e borda colorida rotativa
+- 📱 100% responsivo — mobile, tablet e desktop
+
+---
+
+## 🛠️ Tecnologias
+
+| Tecnologia | Função |
+|---|---|
+| **Next.js 16** | Framework React com App Router e Route Handlers |
+| **TypeScript** | Tipagem estática em todo o projeto |
+| **Tailwind CSS** | Estilização utilitária com classes responsivas |
+| **Lucide React** | Ícones SVG leves e consistentes |
+| **Open-Meteo API** | Dados meteorológicos e geocoding (gratuita, sem API key) |
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── app/
+│   ├── page.tsx                    # Página principal — orquestra estados e componentes
+│   ├── layout.tsx                  # Layout raiz com metadados
+│   ├── globals.css                 # Estilos globais e animações (fadeIn, borderGlow)
+│   └── api/
+│       └── weather/
+│           └── route.ts            # Proxy servidor — geocoding + forecast + WMO codes
+├── components/
+│   └── weather/
+│       ├── SearchBar.tsx           # Input de busca com dica de formato
+│       ├── WeatherCard.tsx         # Card de resultado com ícones Lucide
+│       └── CitySelect.tsx          # Lista de seleção para cidades duplicadas
+├── lib/
+│   └── weather.ts                  # Helpers de fetch (por nome e por coordenadas)
+└── types/
+    └── weather.ts                  # Interfaces TypeScript para API e dados internos
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Como Rodar
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Pré-requisitos:** Node.js 18+ instalado.
 
-## Learn More
+```bash
+# 1. Clone o repositório
+git clone https://github.com/DouglassenG/weather-app.git
 
-To learn more about Next.js, take a look at the following resources:
+# 2. Entre na pasta
+cd weather-app
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 3. Instale as dependências
+npm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 4. Rode o servidor de desenvolvimento
+npm run dev
+```
 
-## Deploy on Vercel
+Acesse **http://localhost:3000** no navegador.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> ℹ️ Não é necessário configurar API key. A Open-Meteo é gratuita e aberta para uso não-comercial.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🔄 Fluxo da Aplicação
+
+```
+Usuário digita "Lajeado, RS" → clica Buscar
+        ↓
+SearchBar envia o texto para page.tsx
+        ↓
+page.tsx chama fetchWeather("Lajeado, RS")
+        ↓
+lib/weather.ts faz fetch para /api/weather?city=Lajeado,%20RS
+        ↓
+route.ts separa "Lajeado" + "RS"
+        ↓
+Geocoding API retorna coordenadas de Lajeado/RS
+        ↓
+Forecast API retorna clima atual + min/max + probabilidade de chuva
+        ↓
+route.ts monta WeatherData e devolve ao frontend
+        ↓
+WeatherCard renderiza os dados na tela
+```
+
+---
+
+## 🎨 Design
+
+A interface segue o conceito **glassmorphism** com:
+
+- Cards translúcidos com `backdrop-blur` sobre vídeo de fundo
+- Animação de borda colorida rotativa no card de busca (céu → entardecer → sol → natureza)
+- Animações de entrada em cascata (fade + slide)
+- Ícones coloridos com fundo semitransparente por métrica
+- Paleta escura para contraste e legibilidade sobre qualquer fundo
+
+---
+
+## 📄 Licença
+
+Este projeto é de uso pessoal e educacional.
+
+---
+
+Desenvolvido por [Douglas](https://github.com/DouglassenG) 🚀
